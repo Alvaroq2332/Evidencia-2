@@ -279,7 +279,7 @@ def ConsultaYReportes():
 
         if eleccion==3: 
 
-            Break 
+            break 
             
 # Menu principal 
 
