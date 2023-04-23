@@ -311,7 +311,12 @@ def Menu():
 
             ConsultaYReportes() 
 
-        elif var_elect=="3": 
+        elif var_elect=="3":
+            with open("libros.csv","w",newline="") as archivo:
+              guardar=csv.writer(archivo)
+              guardar.writerow(("Titulo","Autor","Genero","Año publicacion","ISBN","Año adquisicion"))
+
+              guardar.writerows([(libro[0],libro[1],libro[2],libro[3],libro[4],libro[5]) for identificador, libro in libros.items()])
 
             print("Ha salido del programa ") 
 
