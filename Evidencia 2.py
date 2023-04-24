@@ -1,3 +1,24 @@
+import os
+import openpyxl
+import csv
+
+libros=dict()
+
+try:
+    with open("libros.csv",'r', newline="") as archivo:
+            lector = csv.reader(archivo)
+            next(lector)
+            for identificador,titulo,autor, genero,añoPublic,isbn,fechaAdqui in lector:
+                libros[int(identificador)]=(titulo,autor,genero,añoPublic,isbn,fechaAdqui)
+except:
+    print()
+    print('No se ha encontrado ningun archivo previo de guardado')
+    print('*SE HA GENERADO UN ARCHIVO CSV EN BLANCO*')
+    archivo = open("libros.csv","w", newline="")
+    grabador = csv.writer(archivo)
+    grabador.writerow(("Identificador", "titulo", "autor",'genero','año publicacion',"isbn",'fecha adquisicion'))
+    archivo.close()
+
 libros=dict()
 
 def RegistrarNuevoEjempar():
@@ -5,14 +26,11 @@ def RegistrarNuevoEjempar():
         global identificador
         print("")
         print("****Registrar Libro*****")
-        #Generacion de llaves de diccionario; si ya hay llaves en el diccionario añade 1 mas al conteo, si no, asigna la primera lista primero con el numero 1
         if libros.keys():
             identificador=max(libros.keys())+1
         else:
             identificador=1
         print()
-        
-        #Entrada de datos para el registro de libro
         titulo=input("Ingresa el titulo: ")
         titulo=titulo.upper()
         
@@ -22,7 +40,6 @@ def RegistrarNuevoEjempar():
         genero=input("Ingresa el genero: ")
         genero=genero.upper()
         
-        
         añoPublic=input("Ingresa el año de publicacion: ")
         
         isbn=input("Ingresa el ISBN: ")
@@ -30,22 +47,28 @@ def RegistrarNuevoEjempar():
 
         fechAdqui=input("Ingresa el año de adquisicion: ")
         
-        #Datos ingresados almacenados en la lista "ejemplar"
+        
         ejemplar=(titulo,autor,genero,añoPublic,isbn,fechAdqui)
         
-        #Lista ejemplar guardada en el diccionario de "libros"
+        
         libros[identificador]=ejemplar
-        
-        
+
         agregar=input("Desea agregar otro libro? [S/N]: ")
         agregar=agregar.upper()
         
         if agregar=="S":
             pass
         elif agregar=="N":
+            archivo = open("libros.csv","w", newline="")
+            grabador = csv.writer(archivo)
+            grabador.writerow(('identificador','titulo','autor','genero','año publicacion','isbn','fecha adquisicion'))
+            grabador.writerows([(identificador, datos[0],datos[1],datos[2],datos[3],datos[4],datos[5])for identificador, datos in libros.items()])
+            archivo.close()
+
             break
         else:
             print("opcion no valida")
+
 def MostrarCatalagoCompleto():
     print()
     print("**Catálogo completo***")
