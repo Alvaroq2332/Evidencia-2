@@ -108,9 +108,7 @@ def MostrarCatalagoCompleto():
 def ReportePorAutor():
     autores=list()
     print()
-    print("**Reporte por autor***")
-    
-    #Muestra todos los autores de libros sin repetirlos
+    print("*******Reporte por autor******")
     autores=list()
     for libro in libros.values():
         autores.append(libro[1])
@@ -121,15 +119,41 @@ def ReportePorAutor():
     for autor in autores:
         print(f"-{autor}")
     
-    #Consulta
     autor=input("Ingrese el nombre del autor: ")
     autorBuscado=autor.upper()
     try:
         print()
-        print(f"{'Titulo':15}|{'Autor':20}|{'Genero':10}|{'Año Publicacion':<18}|{'ISBN':13}|{'AÑO Adquisicion'}")
+        print("TITULO | AUTOR | GENERO | AÑO PUBLICACION | ISBN | AÑO ADQUISICION")
         for libro in libros.values():
             if libro[1]==autorBuscado:
-                print(f"{libro[0]:15}|{libro[1]:<20}|{libro[2]:<10}|{libro[3]:<18}|{libro[4]:<13}|{libro[5]} ")
+                print(f"{libro[0]} | {libro[1]} | {libro[2]} | {libro[3]} | {libro[4]} | {libro[5]}")
+                opcion=input("\nDesea exportar a csv [C]\nDesas exportar a excel [E]\nNo exportar [N]\n ")
+                if opcion=="C":
+                  archivo = open("Reporte autores.csv","w", newline="")
+                  grabador = csv.writer(archivo)
+                  grabador.writerow(('titulo','autor','genero','año publicacion','isbn','fecha adquisicion'))
+                  grabador.writerows([libro[0],libro[1],libro[2],libro[3],libro[4],libro[5]]for libro in libros.values() if libro[1]==autorBuscado)
+                  archivo.close()
+                if opcion=="E":
+                  libro_excel = openpyxl.Workbook()
+                  hoja = libro_excel["Sheet"] 
+                  hoja.title = ("f{autorBuscado}")
+                  hoja["A1"].value = "Titulo"
+                  hoja["B1"].value = "Autor"
+                  hoja["C1"].value = "Genero"
+                  hoja["D1"].value = "Año Publicacion"
+                  hoja["E1"].value = "ISBN"
+                  hoja["F1"].value = "Fecha Adquisicion"
+                  renglon=2
+                  hoja.cell(row=renglon, column=1).value = libro[0]  
+                  hoja.cell(row=renglon, column=2).value = libro[1]  
+                  hoja.cell(row=renglon, column=3).value = libro[2]  
+                  hoja.cell(row=renglon, column=4).value = libro[3]  
+                  hoja.cell(row=renglon, column=5).value = libro[4] 
+                  hoja.cell(row=renglon, column=6).value = libro[5]  
+                  libro_excel.save(f"Reporte de {autorBuscado}.xlsx")
+        else:
+          pass
     except:
         pass
 
@@ -186,12 +210,11 @@ def ReportePorGenero():
     except:
         pass
 
-#Funcion busqueda por año
 def ReportePorAño():
     print()
-    print("**Reporte por año de publicacion***")
+    print("*******Reporte por año de publicacion******")
     
-    #Muestra todos los autores de libros sin repetirlos
+    
     años=list()
     for libro in libros.values():
         años.append(libro[3])
@@ -202,19 +225,44 @@ def ReportePorAño():
     for año in años:
         print(f"-{año}")
 
-    #Consulta
+    
     año=input("Ingrese el año: ")
     añoBuscado=año.upper()
     try:
         print()
-        print(f"{'Titulo':15}|{'Autor':20}|{'Genero':10}|{'Año Publicacion':<18}|{'ISBN':13}|{'AÑO Adquisicion'}")
+        print("TITULO | AUTOR | GENERO | AÑO PUBLICACION | ISBN | AÑO ADQUISICION")
         for libro in libros.values():
             if libro[3]==añoBuscado:
-                print(f"{libro[0]:15}|{libro[1]:<20}|{libro[2]:<10}|{libro[3]:<18}|{libro[4]:<13}|{libro[5]} ")
+                print(f"{libro[0]} | {libro[1]} | {libro[2]} | {libro[3]} | {libro[4]} | {libro[5]}")
+                opcion=input("\nDesea exportar a csv [C]\nDesas exportar a excel [E]\nNo exportar [N]\n ")
+                if opcion=="C":
+                    archivo = open("Reporte año.csv","w", newline="")
+                    grabador = csv.writer(archivo)
+                    grabador.writerow(('titulo','autor','genero','año publicacion','isbn','fecha adquisicion'))
+                    grabador.writerows([libro[0],libro[1],libro[2],libro[3],libro[4],libro[5]]for libro in libros.values() if libro[3]==añoBuscado)
+                    archivo.close()
+                if opcion=="E":
+                  libro_excel = openpyxl.Workbook()
+                  hoja = libro_excel["Sheet"] 
+                  hoja.title = (f"{añoBuscado}") 
+                  hoja["A1"].value = "Titulo"
+                  hoja["B1"].value = "Autor"
+                  hoja["C1"].value = "Genero"
+                  hoja["D1"].value = "Año Publicacion"
+                  hoja["E1"].value = "ISBN"
+                  hoja["F1"].value = "Fecha Adquisicion"
+                  renglon=2
+                  hoja.cell(row=renglon, column=1).value = libro[0] 
+                  hoja.cell(row=renglon, column=2).value = libro[1]  
+                  hoja.cell(row=renglon, column=3).value = libro[2]  
+                  hoja.cell(row=renglon, column=4).value = libro[3]  
+                  hoja.cell(row=renglon, column=5).value = libro[4] 
+                  hoja.cell(row=renglon, column=6).value = libro[5]  
+                  libro_excel.save(f"Reporte {añoBuscado}.xlsx")
+                else:
+                  pass
     except:
         pass
-
-
 def Reportes():
     while True:
         print()
@@ -235,8 +283,6 @@ def Reportes():
             ReportePorAño()
         if eleccion==5:
             break
-
-
 
 def BusquedaPorTitulo():
     print()
@@ -263,116 +309,35 @@ def BusquedaPorTitulo():
         pass
     
 def BusquedaPorISBN(): 
-
     print() 
-
-    print("**Búsqueda por ISBN***") 
-
- 
-
-    
-
-    isbn=input("Ingrese el ISBN del libro: ") 
-
+    print("**Búsqueda por ISBN***")
+    isbn=input("Ingrese el ISBN del libro: ")
     try: 
-
         print() 
-
         print(f"{'Titulo':15}|{'Autor':20}|{'Genero':10}|{'Año Publicacion':<18}|{'ISBN':13}|{'AÑO Adquisicion'}") 
-
         for libro in libros.values(): 
-
             if libro[4]==isbn: 
-
                 print(f"{libro[0]:15}|{libro[1]:<20}|{libro[2]:<10}|{libro[3]:<18}|{libro[4]:<13}|{libro[5]} ") 
-
     except: 
-
         pass 
 
  
-def ReportePorAutor():
-    autores=list()
-    print()
-    print("*******Reporte por autor******")
-    autores=list()
-    for libro in libros.values():
-        autores.append(libro[1])
-        for autor in autores:
-            if autores.count(autor)>1:
-                autores.remove(autor)
-    print("---AUTORES DISPONIBLES----")
-    for autor in autores:
-        print(f"-{autor}")
-    
-    autor=input("Ingrese el nombre del autor: ")
-    autorBuscado=autor.upper()
-    try:
-        print()
-        print("TITULO | AUTOR | GENERO | AÑO PUBLICACION | ISBN | AÑO ADQUISICION")
-        for libro in libros.values():
-            if libro[1]==autorBuscado:
-                print(f"{libro[0]} | {libro[1]} | {libro[2]} | {libro[3]} | {libro[4]} | {libro[5]}")
-                opcion=input("\nDesea exportar a csv [C]\nDesas exportar a excel [E]\nNo exportar [N]\n ")
-                if opcion=="C":
-                  archivo = open("Reporte autores.csv","w", newline="")
-                  grabador = csv.writer(archivo)
-                  grabador.writerow(('titulo','autor','genero','año publicacion','isbn','fecha adquisicion'))
-                  grabador.writerows([libro[0],libro[1],libro[2],libro[3],libro[4],libro[5]]for libro in libros.values() if libro[1]==autorBuscado)
-                  archivo.close()
-                if opcion=="E":
-                  libro_excel = openpyxl.Workbook()
-                  hoja = libro_excel["Sheet"] 
-                  hoja.title = ("f{autorBuscado}")
-                  hoja["A1"].value = "Titulo"
-                  hoja["B1"].value = "Autor"
-                  hoja["C1"].value = "Genero"
-                  hoja["D1"].value = "Año Publicacion"
-                  hoja["E1"].value = "ISBN"
-                  hoja["F1"].value = "Fecha Adquisicion"
-                  renglon=2
-                  hoja.cell(row=renglon, column=1).value = libro[0]  
-                  hoja.cell(row=renglon, column=2).value = libro[1]  
-                  hoja.cell(row=renglon, column=3).value = libro[2]  
-                  hoja.cell(row=renglon, column=4).value = libro[3]  
-                  hoja.cell(row=renglon, column=5).value = libro[4] 
-                  hoja.cell(row=renglon, column=6).value = libro[5]  
-                  libro_excel.save(f"Reporte de {autorBuscado}.xlsx")
-        else:
-          pass
-    except:
-        pass
-
 
 
 def TituloYIsbn(): 
-
     while True: 
-
         print() 
-
         print("***Consulta por título y ISBN*") 
-
         print() 
-
         print("1 busqueda por Título") 
-
         print("2 Busqueda por ISBN") 
-
         print("3 Volver al menú principal") 
-
         eleccion=int(input("Elige una opción: ")) 
-
         if eleccion==1: 
-
             BusquedaPorTitulo() 
-
         if eleccion==2: 
-
             BusquedaPorISBN() 
-
         if eleccion==3: 
-
             break 
 
  
@@ -380,33 +345,18 @@ def TituloYIsbn():
 
 
 def ConsultaYReportes(): 
-
     while True: 
-
         print() 
-
         print("****CONSULTA Y REPORTES*****") 
-
-         
-
         print("1 Consulta de título y ISBN") 
-
         print("2 Reportes") 
-
         print("3 Volver al menú principal") 
-
         eleccion=int(input("Elige una opción: ")) 
-
         if eleccion==1: 
-
             TituloYIsbn() 
-
         if eleccion==2: 
-
             Reportes() 
-
         if eleccion==3: 
-
             break 
             
 # Menu principal 
