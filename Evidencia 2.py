@@ -71,11 +71,40 @@ def RegistrarNuevoEjempar():
 
 def MostrarCatalagoCompleto():
     print()
-    print("**Catálogo completo***")
-    print(f"{'Titulo':15}|{'Autor':20}|{'Genero':10}|{'Año Publicacion':<18}|{'ISBN':13}|{'AÑO Adquisicion'}")
-    for libro in libros.values(): #Busqueda de los datos por medio de posiciones en la lista
-        print(f"{libro[0]:15}|{libro[1]:<20}|{libro[2]:<10}|{libro[3]:<18}|{libro[4]:<13}|{libro[5]} ")
-#Funcion debusqueda por autor
+    print("*******Catalago completo********")
+    print("TITULO | AUTOR | GENERO | AÑO PUBLICACION | ISBN | AÑO ADQUISICION")
+    for libro in libros.values(): 
+        print(f"{libro[0]} | {libro[1]} | {libro[2]} | {libro[3]} | {libro[4]} | {libro[5]}")
+    opcion=input("\nDesea exportar a csv [C]\nDesas exportar a excel [E]\nNo exportar [N]\n ")
+    if opcion=="C":
+        archivo = open("Reporte ejemplares existentes.csv","w", newline="")
+        grabador = csv.writer(archivo)
+        grabador.writerow(('titulo','autor','genero','año publicacion','isbn','fecha adquisicion'))
+        grabador.writerows([libro[0],libro[1],libro[2],libro[3],libro[4],libro[5]]for libro in libros.values())
+        archivo.close()
+    elif opcion=="E":
+        libro_wb = openpyxl.Workbook() 
+        libro_hoja = libro_wb.active 
+        libro_hoja.title = "Libros" 
+        
+        libro_hoja["A1"] = "Titulo"
+        libro_hoja["B1"] = "Autor"
+        libro_hoja["C1"] = "Genero"
+        libro_hoja["D1"] = "Año Publicacion"
+        libro_hoja["E1"] = "ISBN"
+        libro_hoja["F1"] = "Fecha Adquisicion"
+       
+        row = 2
+        for libro in libros.values():
+            libro_hoja.cell(row=row, column=1, value=libro[0])
+            libro_hoja.cell(row=row, column=2, value=libro[1])
+            libro_hoja.cell(row=row, column=3, value=libro[2])
+            libro_hoja.cell(row=row, column=4, value=libro[3])
+            libro_hoja.cell(row=row, column=5, value=libro[4])
+            libro_hoja.cell(row=row, column=6, value=libro[5])
+            row += 1
+        libro_wb.save("Reporte ejemplares existentes.xlsx")
+
 def ReportePorAutor():
     autores=list()
     print()
