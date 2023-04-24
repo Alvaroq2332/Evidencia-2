@@ -291,6 +291,57 @@ def BusquedaPorISBN():
         pass 
 
  
+def ReportePorAutor():
+    autores=list()
+    print()
+    print("*******Reporte por autor******")
+    autores=list()
+    for libro in libros.values():
+        autores.append(libro[1])
+        for autor in autores:
+            if autores.count(autor)>1:
+                autores.remove(autor)
+    print("---AUTORES DISPONIBLES----")
+    for autor in autores:
+        print(f"-{autor}")
+    
+    autor=input("Ingrese el nombre del autor: ")
+    autorBuscado=autor.upper()
+    try:
+        print()
+        print("TITULO | AUTOR | GENERO | AÑO PUBLICACION | ISBN | AÑO ADQUISICION")
+        for libro in libros.values():
+            if libro[1]==autorBuscado:
+                print(f"{libro[0]} | {libro[1]} | {libro[2]} | {libro[3]} | {libro[4]} | {libro[5]}")
+                opcion=input("\nDesea exportar a csv [C]\nDesas exportar a excel [E]\nNo exportar [N]\n ")
+                if opcion=="C":
+                  archivo = open("Reporte autores.csv","w", newline="")
+                  grabador = csv.writer(archivo)
+                  grabador.writerow(('titulo','autor','genero','año publicacion','isbn','fecha adquisicion'))
+                  grabador.writerows([libro[0],libro[1],libro[2],libro[3],libro[4],libro[5]]for libro in libros.values() if libro[1]==autorBuscado)
+                  archivo.close()
+                if opcion=="E":
+                  libro_excel = openpyxl.Workbook()
+                  hoja = libro_excel["Sheet"] 
+                  hoja.title = ("f{autorBuscado}")
+                  hoja["A1"].value = "Titulo"
+                  hoja["B1"].value = "Autor"
+                  hoja["C1"].value = "Genero"
+                  hoja["D1"].value = "Año Publicacion"
+                  hoja["E1"].value = "ISBN"
+                  hoja["F1"].value = "Fecha Adquisicion"
+                  renglon=2
+                  hoja.cell(row=renglon, column=1).value = libro[0]  
+                  hoja.cell(row=renglon, column=2).value = libro[1]  
+                  hoja.cell(row=renglon, column=3).value = libro[2]  
+                  hoja.cell(row=renglon, column=4).value = libro[3]  
+                  hoja.cell(row=renglon, column=5).value = libro[4] 
+                  hoja.cell(row=renglon, column=6).value = libro[5]  
+                  libro_excel.save(f"Reporte de {autorBuscado}.xlsx")
+        else:
+          pass
+    except:
+        pass
 
 
 
