@@ -189,7 +189,7 @@ def ReportePorAño():
     except:
         pass
 
-# Sub menu de Reportes
+
 def Reportes():
     while True:
         print()
@@ -245,7 +245,7 @@ def BusquedaPorISBN():
 
  
 
-    #Consulta 
+    
 
     isbn=input("Ingrese el ISBN del libro: ") 
 
@@ -267,7 +267,7 @@ def BusquedaPorISBN():
 
  
 
-#Sub menu para la busqueda por título y ISBN 
+
 
 def TituloYIsbn(): 
 
@@ -301,7 +301,7 @@ def TituloYIsbn():
 
  
 
-#Submenu de consultas y reportes  
+
 
 def ConsultaYReportes(): 
 
@@ -335,45 +335,22 @@ def ConsultaYReportes():
             
 # Menu principal 
 
-def Menu(): 
-
-    while True: 
-
-        print() 
-
-        print("****BIBLIOTECA****") 
-
-        print() 
-
-        print("1 Registrar nuevo ejemplar") 
-
-        print("2 Consultas y reportes") 
-
-        print("3 Salir") 
-
-        print() 
-
-        var_elect=input("Ingrese algun número: ") 
-
-        if var_elect=="1": 
-
-            RegistrarNuevoEjempar() 
-
-        if var_elect=="2": 
-
-            ConsultaYReportes() 
-
+def Menu():
+    while True:
+        print()
+        print("***********BIBLIOTECA*************")
+        print()
+        print("*1* Registrar nuevo ejemplar")
+        print("*2* Consultas y reportes")
+        print("*3* Salir")
+        print()
+        var_elect=input("Ingrese un numero: ")
+        if var_elect=="1":
+            RegistrarNuevoEjempar()
+        if var_elect=="2":
+            ConsultaYReportes()
         elif var_elect=="3":
-            with open("libros.csv","w",newline="") as archivo:
-              guardar=csv.writer(archivo)
-              guardar.writerow(("Titulo","Autor","Genero","Año publicacion","ISBN","Año adquisicion"))
+            print("Ha salido del programa")
+            break
 
-              guardar.writerows([(libro[0],libro[1],libro[2],libro[3],libro[4],libro[5]) for identificador, libro in libros.items()])
-
-            print("Ha salido del programa ") 
-
-            break 
-
- 
-
-Menu() 
+Menu()
