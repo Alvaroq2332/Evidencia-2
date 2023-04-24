@@ -136,9 +136,9 @@ def ReportePorAutor():
 #Funcion busqueda por genero
 def ReportePorGenero():
     print()
-    print("**Reporte por genero***")
+    print("*******Reporte por genero******")
     
-    #Muestra todos los autores de libros sin repetirlos
+    
     generos=list()
     for libro in libros.values():
         generos.append(libro[2])
@@ -149,15 +149,41 @@ def ReportePorGenero():
     for genero in generos:
         print(f"-{genero}")
     
-    #Consulta
     genero=input("Ingrese el genero: ")
     generoBuscado=genero.upper()
     try:
         print()
-        print(f"{'Titulo':15}|{'Autor':20}|{'Genero':10}|{'Año Publicacion':<18}|{'ISBN':13}|{'AÑO Adquisicion'}")
+        print("TITULO | AUTOR | GENERO | AÑO PUBLICACION | ISBN | AÑO ADQUISICION")
         for libro in libros.values():
             if libro[2]==generoBuscado:
-                print(f"{libro[0]:15}|{libro[1]:<20}|{libro[2]:<10}|{libro[3]:<18}|{libro[4]:<13}|{libro[5]} ")
+                print(f"{libro[0]} | {libro[1]} | {libro[2]} | {libro[3]} | {libro[4]} | {libro[5]}")
+                opcion=input("\nDesea exportar a csv [C]\nDesas exportar a excel [E]\nNo exportar [N]\n ")
+                if opcion=="C":
+                    archivo = open("Reporte generos.csv","w", newline="")
+                    grabador = csv.writer(archivo)
+                    grabador.writerow(('titulo','autor','genero','año publicacion','isbn','fecha adquisicion'))
+                    grabador.writerows([libro[0],libro[1],libro[2],libro[3],libro[4],libro[5]]for libro in libros.values() if libro[2]==generoBuscado)
+                    archivo.close()
+                if opcion=="E":
+                  libro_excel = openpyxl.Workbook()
+                  hoja = libro_excel["Sheet"] 
+                  hoja.title = (f"{generoBuscado}")
+                  hoja["A1"].value = "Titulo"
+                  hoja["B1"].value = "Autor"
+                  hoja["C1"].value = "Genero"
+                  hoja["D1"].value = "Año Publicacion"
+                  hoja["E1"].value = "ISBN"
+                  hoja["F1"].value = "Fecha Adquisicion"
+                  renglon=2
+                  hoja.cell(row=renglon, column=1).value = libro[0]  
+                  hoja.cell(row=renglon, column=2).value = libro[1]  
+                  hoja.cell(row=renglon, column=3).value = libro[2]  
+                  hoja.cell(row=renglon, column=4).value = libro[3]  
+                  hoja.cell(row=renglon, column=5).value = libro[4]  
+                  hoja.cell(row=renglon, column=6).value = libro[5] 
+                  libro_excel.save(f"Reporte de{generoBuscado}.xlsx")
+                else:
+                  pass
     except:
         pass
 
