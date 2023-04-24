@@ -136,9 +136,8 @@ def ReportePorAutor():
 #Funcion busqueda por genero
 def ReportePorGenero():
     print()
-    print("**Reporte por genero***")
+    print("*******Reporte por genero******")
     
-    #Muestra todos los autores de libros sin repetirlos
     generos=list()
     for libro in libros.values():
         generos.append(libro[2])
@@ -149,24 +148,50 @@ def ReportePorGenero():
     for genero in generos:
         print(f"-{genero}")
     
-    #Consulta
     genero=input("Ingrese el genero: ")
     generoBuscado=genero.upper()
     try:
         print()
-        print(f"{'Titulo':15}|{'Autor':20}|{'Genero':10}|{'Año Publicacion':<18}|{'ISBN':13}|{'AÑO Adquisicion'}")
+        print("TITULO | AUTOR | GENERO | AÑO PUBLICACION | ISBN | AÑO ADQUISICION")
         for libro in libros.values():
             if libro[2]==generoBuscado:
-                print(f"{libro[0]:15}|{libro[1]:<20}|{libro[2]:<10}|{libro[3]:<18}|{libro[4]:<13}|{libro[5]} ")
+                print(f"{libro[0]} | {libro[1]} | {libro[2]} | {libro[3]} | {libro[4]} | {libro[5]}")
+                opcion=input("\nDesea exportar a csv [C]\nDesas exportar a excel [E]\nNo exportar [N]\n ")
+                if opcion=="C":
+                    archivo = open("Reporte generos.csv","w", newline="")
+                    grabador = csv.writer(archivo)
+                    grabador.writerow(('titulo','autor','genero','año publicacion','isbn','fecha adquisicion'))
+                    grabador.writerows([libro[0],libro[1],libro[2],libro[3],libro[4],libro[5]]for libro in libros.values() if libro[2]==generoBuscado)
+                    archivo.close()
+                if opcion=="E":
+                  libro_excel = openpyxl.Workbook()
+                  hoja = libro_excel["Sheet"] 
+                  hoja.title = (f"{generoBuscado}")
+                  hoja["A1"].value = "Titulo"
+                  hoja["B1"].value = "Autor"
+                  hoja["C1"].value = "Genero"
+                  hoja["D1"].value = "Año Publicacion"
+                  hoja["E1"].value = "ISBN"
+                  hoja["F1"].value = "Fecha Adquisicion"
+                  renglon=2
+                  hoja.cell(row=renglon, column=1).value = libro[0]  
+                  hoja.cell(row=renglon, column=2).value = libro[1]  
+                  hoja.cell(row=renglon, column=3).value = libro[2]  
+                  hoja.cell(row=renglon, column=4).value = libro[3]  
+                  hoja.cell(row=renglon, column=5).value = libro[4]  
+                  hoja.cell(row=renglon, column=6).value = libro[5] 
+                  libro_excel.save(f"Reporte de{generoBuscado}.xlsx")
+                else:
+                  pass
     except:
         pass
 
 #Funcion busqueda por año
 def ReportePorAño():
     print()
-    print("*******Reporte por año de publicacion******")
+    print("**Reporte por año de publicacion***")
     
-    
+    #Muestra todos los autores de libros sin repetirlos
     años=list()
     for libro in libros.values():
         años.append(libro[3])
@@ -177,43 +202,180 @@ def ReportePorAño():
     for año in años:
         print(f"-{año}")
 
-    
+    #Consulta
     año=input("Ingrese el año: ")
     añoBuscado=año.upper()
     try:
         print()
-        print("TITULO | AUTOR | GENERO | AÑO PUBLICACION | ISBN | AÑO ADQUISICION")
+        print(f"{'Titulo':15}|{'Autor':20}|{'Genero':10}|{'Año Publicacion':<18}|{'ISBN':13}|{'AÑO Adquisicion'}")
         for libro in libros.values():
             if libro[3]==añoBuscado:
-                print(f"{libro[0]} | {libro[1]} | {libro[2]} | {libro[3]} | {libro[4]} | {libro[5]}")
-                opcion=input("\nDesea exportar a csv [C]\nDesas exportar a excel [E]\nNo exportar [N]\n ")
-                if opcion=="C":
-                    archivo = open("Reporte año.csv","w", newline="")
-                    grabador = csv.writer(archivo)
-                    grabador.writerow(('titulo','autor','genero','año publicacion','isbn','fecha adquisicion'))
-                    grabador.writerows([libro[0],libro[1],libro[2],libro[3],libro[4],libro[5]]for libro in libros.values() if libro[3]==añoBuscado)
-                    archivo.close()
-                if opcion=="E":
-                  libro_excel = openpyxl.Workbook()
-                  hoja = libro_excel["Sheet"] 
-                  hoja.title = (f"{añoBuscado}") 
-                  hoja["A1"].value = "Titulo"
-                  hoja["B1"].value = "Autor"
-                  hoja["C1"].value = "Genero"
-                  hoja["D1"].value = "Año Publicacion"
-                  hoja["E1"].value = "ISBN"
-                  hoja["F1"].value = "Fecha Adquisicion"
-                  renglon=2
-                  hoja.cell(row=renglon, column=1).value = libro[0] 
-                  hoja.cell(row=renglon, column=2).value = libro[1]  
-                  hoja.cell(row=renglon, column=3).value = libro[2]  
-                  hoja.cell(row=renglon, column=4).value = libro[3]  
-                  hoja.cell(row=renglon, column=5).value = libro[4] 
-                  hoja.cell(row=renglon, column=6).value = libro[5]  
-                  libro_excel.save(f"Reporte {añoBuscado}.xlsx")
-                else:
-                  pass
+                print(f"{libro[0]:15}|{libro[1]:<20}|{libro[2]:<10}|{libro[3]:<18}|{libro[4]:<13}|{libro[5]} ")
     except:
         pass
 
 
+def Reportes():
+    while True:
+        print()
+        print("**Reportes**")
+        print("1 Catalago completo")
+        print("2 Reporte por autor")
+        print('3 Reporte por genero')
+        print('4 Reporte por año de publicación')
+        print('5 Regresar al menu anterior')
+        eleccion=int(input("Selecciona una opcion: "))
+        if eleccion==1:
+            MostrarCatalagoCompleto()
+        if eleccion==2:
+            ReportePorAutor()
+        if eleccion==3:
+            ReportePorGenero()
+        if eleccion==4:
+            ReportePorAño()
+        if eleccion==5:
+            break
+
+
+
+def BusquedaPorTitulo():
+    print()
+    print("**Busqueda por titulo***")
+    titulos=list()
+    for libro in libros.values():
+        titulos.append(libro[0])
+        for titulo in titulos:
+            if titulos.count(titulo)>1:
+                titulos.remove(titulo)
+    print("-----TITULOS DISPONIBLES-----")
+    for titulo in titulos:
+        print(f"-{titulo}")
+    #Consulta
+    titulo=input("Ingrese el titulo del libro: ")
+    tituloBuscado=titulo.upper()
+    try:
+        print()
+       print(f"{'Titulo':15}|{'Autor':20}|{'Genero':10}|{'Año Publicacion':<18}|{'ISBN':13}|{'AÑO Adquisicion'}")
+        for libro in libros.values():
+            if libro[0]==tituloBuscado:
+                print(f"{libro[0]:15}|{libro[1]:<20}|{libro[2]:<10}|{libro[3]:<18}|{libro[4]:<13}|{libro[5]} ")
+    except:
+        pass
+    
+def BusquedaPorISBN(): 
+
+    print() 
+
+    print("**Búsqueda por ISBN***") 
+
+ 
+
+    
+
+    isbn=input("Ingrese el ISBN del libro: ") 
+
+    try: 
+
+        print() 
+
+        print(f"{'Titulo':15}|{'Autor':20}|{'Genero':10}|{'Año Publicacion':<18}|{'ISBN':13}|{'AÑO Adquisicion'}") 
+
+        for libro in libros.values(): 
+
+            if libro[4]==isbn: 
+
+                print(f"{libro[0]:15}|{libro[1]:<20}|{libro[2]:<10}|{libro[3]:<18}|{libro[4]:<13}|{libro[5]} ") 
+
+    except: 
+
+        pass 
+
+ 
+
+
+
+def TituloYIsbn(): 
+
+    while True: 
+
+        print() 
+
+        print("***Consulta por título y ISBN*") 
+
+        print() 
+
+        print("1 busqueda por Título") 
+
+        print("2 Busqueda por ISBN") 
+
+        print("3 Volver al menú principal") 
+
+        eleccion=int(input("Elige una opción: ")) 
+
+        if eleccion==1: 
+
+            BusquedaPorTitulo() 
+
+        if eleccion==2: 
+
+            BusquedaPorISBN() 
+
+        if eleccion==3: 
+
+            break 
+
+ 
+
+
+
+def ConsultaYReportes(): 
+
+    while True: 
+
+        print() 
+
+        print("****CONSULTA Y REPORTES*****") 
+
+         
+
+        print("1 Consulta de título y ISBN") 
+
+        print("2 Reportes") 
+
+        print("3 Volver al menú principal") 
+
+        eleccion=int(input("Elige una opción: ")) 
+
+        if eleccion==1: 
+
+            TituloYIsbn() 
+
+        if eleccion==2: 
+
+            Reportes() 
+
+        if eleccion==3: 
+
+            break 
+            
+# Menu principal 
+
+def Menu():
+    while True:
+        print()
+        print("***********BIBLIOTECA*************")
+        print()
+        print("*1* Registrar nuevo ejemplar")
+        print("*2* Consultas y reportes")
+        print("*3* Salir")
+        print()
+        var_elect=input("Ingrese un numero: ")
+        if var_elect=="1":
+            RegistrarNuevoEjempar()
+        if var_elect=="2":
+            ConsultaYReportes()
+        elif var_elect=="3":
+            print("Ha salido del programa")
+            break
+
+Menu()
